@@ -34,7 +34,6 @@ function start() {
       choices: ["Add Department", "Add Role", "Add Employee", "View Departments", "View Roles", "View Employees", "Update Employee Role"]
     })
     .then(function(answer) {
-      // based on their answer, either call the bid or the post functions
       if (answer.addViewUpdate === "Add Department") {
         addDep();
       }
@@ -62,9 +61,7 @@ function start() {
     });
 }
 
-// function to handle posting new items up for auction
 function addDep() {
-  // prompt for info about the item being put up for auction
   inquirer
     .prompt([
       {
@@ -74,7 +71,6 @@ function addDep() {
       }
     ])
     .then(function(answer) {
-      // when finished prompting, insert a new item into the db with that info
       connection.query(
         "INSERT INTO department SET ?",
         {
@@ -83,7 +79,6 @@ function addDep() {
         function(err) {
           if (err) throw err;
           console.log("Department added successfully!");
-          // re-prompt the user for if they want to bid or post
           start();
         }
       );
@@ -91,7 +86,6 @@ function addDep() {
 }
 
 function addRole() {
-    // prompt for info about the item being put up for auction
     inquirer
       .prompt([
         {
@@ -111,7 +105,6 @@ function addRole() {
         }
       ])
       .then(function(answer) {
-        // when finished prompting, insert a new item into the db with that info
         connection.query(
           "INSERT INTO role SET ?",
           {
@@ -122,7 +115,6 @@ function addRole() {
           function(err) {
             if (err) throw err;
             console.log("Role added successfully!");
-            // re-prompt the user for if they want to bid or post
             start();
           }
         );
@@ -130,7 +122,6 @@ function addRole() {
   }
 
   function addEmp() {
-    // prompt for info about the item being put up for auction
     inquirer
       .prompt([
         {
@@ -155,7 +146,6 @@ function addRole() {
           },
       ])
       .then(function(answer) {
-        // when finished prompting, insert a new item into the db with that info
         connection.query(
           "INSERT INTO employee SET ?",
           {
@@ -167,7 +157,6 @@ function addRole() {
           function(err) {
             if (err) throw err;
             console.log("Employee added successfully!");
-            // re-prompt the user for if they want to bid or post
             start();
           }
         );
@@ -194,7 +183,7 @@ function addRole() {
     });
   }
   function viewDep() {
-    connection.query("SELECT * FROM employee", function(err, res) {
+    connection.query("SELECT * FROM department", function(err, res) {
       if (err) throw err;
   
       // Log all results of the SELECT statement
@@ -205,10 +194,8 @@ function addRole() {
   
   
 function updateEmpRole() {
-  // query the database for all items being auctioned
   connection.query("SELECT * FROM employee", function(err, results) {
     if (err) throw err;
-    // once you have the items, prompt the user for which they'd like to bid on
     inquirer
       .prompt([
         {
@@ -230,7 +217,6 @@ function updateEmpRole() {
         }
       ])
       .then(function(answer) {
-        // get the information of the chosen item
         var chosenItem;
         for (var i = 0; i < results.length; i++) {
           if (results[i].first_name === answer.choice) {
@@ -238,8 +224,6 @@ function updateEmpRole() {
           }
         }
 
-        // determine if bid was high enough
-          // bid was high enough, so update db, let the user know, and start over
           connection.query(
             "UPDATE employee SET ? WHERE ?",
             [
