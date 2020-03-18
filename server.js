@@ -231,7 +231,7 @@ function updateEmpRole() {
                 role_id: answer.roleID
               },
               {
-                first_name: chosenItem.id
+                first_name: chosenItem.first_name
               }
             ],
             function(error) {
